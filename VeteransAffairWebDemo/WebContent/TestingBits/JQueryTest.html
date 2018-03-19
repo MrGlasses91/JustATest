@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+   
+<div class="container">
+  <h2>Dropdowns</h2>
+  <p>The .dropdown class is used to indicate a dropdown menu.</p>
+  <p>Use the .dropdown-menu class to actually build the dropdown menu.</p>                                          
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Tutorials
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+      <li role="presentation" class="divider"></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Us</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- menu example-->
+<ul id="menu">
+    <li id="Home"><a>Home</a></li>
+    <li>
+        <a>Search Jobs</a>
+        <ul>
+            <li><a>Advanced Search</a></li>
+            <li><a>Jobs by Company</a></li>
+            <li><a>Jobs by Category</a></li>
+            <li><a>Jobs by Location</a></li>
+            <li><a>Jobs by Skills</a></li>
+            <li><a>Jobs by Designation</a></li>
+        </ul>
+    </li>
+    <li id="PostResume"><a>Post Resume</a></li>
+    <li id="JobSeeker"><a>JobSeeker Login</a></li>
+    <li id="FastForward">
+        <a>Fast Forward</a>
+        <ul>
+            <li><a>Resume writing</a></li>
+            <li><a>Certification</a></li>
+            <li><a>Resume Spotlight</a></li>
+            <li><a>Jobs4u</a></li>
+        </ul>
+    </li>
+</ul>
+<script>
+    $("#menu").ejMenu();
+    //initialize the menu object
+    var menuObj = $("#menu").data("ejMenu");
+    //To insert menu item("More1") as child of target node("Home")
+    menuObj.insert([{ id: 1, text: "More1" }], "#Home");
+    //To insert menu item("More2") as child of target node("Home") with parentId
+    menuObj.insert([{ id: 2, text: "More2", parentId: "Home" }]);
+    //To insert menu items("More3,More4") as child of target node("Home")
+    menuObj.insert([{ id: 3, text: "More3" }, { id: 4, text: "More4" }], "#Home");
+    //To insert menu items("More5,More6") as child of target node("Home,PostResume")
+    menuObj.insert([{ text: "More5" }, { text: "More6" }], ["#Home","#PostResume"]);
+    //To insert menu item("More7") as child of target node("Home") and menu item("More8") as child of target node("PostResume")
+    menuObj.insert([{ id: 5, text: "More7", parentId: "Home" }, { id: 6, text: "More8", parentId: "PostResume" }]);
+</script>
+
+</body>
+</html>
+
+

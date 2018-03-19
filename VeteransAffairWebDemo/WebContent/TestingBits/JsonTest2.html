@@ -1,0 +1,117 @@
+<html>
+	<head>
+		<title>JS Dropdown Tree</title>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+
+		<script type = "text/javascript" language = "javascript">
+			var checkForChange =   
+			$(document).ready(function() {
+				var id = []; 
+				var buttons = [];
+				var reportThis; 
+				var parameter = "def";				
+				id[0] = $('#BaseDropdown').attr('id');
+				var idLength = 1; 
+				var selected = $('#BaseDropdown'); 
+				var defaultColor = $('#submit').css('background-color');
+				buttons[0] = $('#baseButton');
+				
+				//The start function
+		    	$.getJSON('http://localhost:8080/VeteransAffairWebDemo/Test?JSONTEST=' + parameter, function(json){
+		    		$.each(json, function(key, val){
+		    			var newOption = document.createElement("option");
+		    			newOption.text = key;
+		    			newOption.value = val;
+			    		$("#BaseDropdown").append(newOption);
+		    		});
+		    	});
+				
+				//Echo the smallest child
+	         	$("#baseButton").click(function(event){
+					for(var x = 0; x < buttons.length; x++){
+						console.log($(buttons[x]).attr('id')); 
+						$(buttons[x]).css('background-color', defaultColor);
+					}
+				    $(this).css('background-color','red');
+				    selected = $('#' + $(this).attr('val')); 
+	         	});
+				
+	         	$("#submit").click(function(event){
+	         		var printResult = $("#" + selected.attr('id') + " option:selected").text();
+	            	$('#result').html('<div>' + printResult + '</div>');
+	         	});
+				
+				$(document).on('click', 'button', function(event){
+					for(var x = 0; x < buttons.length; x++){
+						$(buttons[x]).css('background-color', defaultColor);
+					}
+				    $(this).css('background-color','red');
+				    selected = $('#' + $(this).attr('val')); 
+				});
+				
+			    $(document).on('change', 'select', function(){
+			    	var removeAfter = parseInt($(this).attr('val'))
+			    	idLength = removeAfter + 1; 
+			    	for(var x = idLength; x < id.length; x++) {			    			
+						var parent = $('#selectID' + x).parent();
+						if($(parent).attr('id') != 'stage'){
+							parent.children().each(function () {
+				    	        $(this).remove();
+				    		});
+				    		parent.remove();
+						}
+			    	}
+	
+			    	parameter = $("#selectID" + removeAfter + " option:selected").val();
+			    	if(removeAfter == 0){
+			    		parameter = $("#BaseDropdown option:selected").val();
+			    	}
+
+			    	//Add new dropdown
+			    	$.getJSON('http://localhost:8080/VeteransAffairWebDemo/Test?JSONTEST=' + parameter, function(json){
+			    		var newSelect = document.createElement("select");
+			    		idLength = idLength + 1; 
+			    		$(newSelect).attr("id", "selectID" + idLength);
+			    		$(newSelect).attr("val", idLength); 
+			    		id[idLength] = "selectID" + idLength; 
+			    		var newDiv = document.createElement("div");
+			    		$('#stage').append(newDiv); 
+			    		var newButton = document.createElement('button');
+			    		$(newButton).text('X');
+			    		$(newButton).addClass('selectButton');
+			    		$(newButton).attr('val', $(newSelect).attr('id'));
+			    		$(newDiv).attr('id','divID' + idLength); 
+			    		$(newDiv).append(newSelect);
+			    		$(newDiv).append(newButton);
+			    		
+			    		buttons[buttons.length] = $(newButton);
+			    		
+			    		$.each(json, function(key, val){
+			    			var newOption = document.createElement("option");
+			    			newOption.text = key;
+			    			newOption.value = val;
+			    			$(newSelect).append(newOption);
+			    		});
+			    	});
+			    	
+			    });
+	         });
+	
+	      </script>
+	</head>
+	
+	<body>
+		<p>Click "Submit" when you have the desired selection:</p>
+		
+		<div id = "stage">
+     		Continent
+			<select id="BaseDropdown" class="required" val = '0'>
+			</select>
+			<input type = 'button' id="baseButton" value = 'X' val = 'BaseDropdown'/>
+		</div>	
+	<input type = "button" id = "submit" value = "Submit" />
+	<div id = "result"></div>
+	</body>
+</html>
